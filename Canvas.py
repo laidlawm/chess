@@ -347,7 +347,7 @@ def validOption(min, max, title, options):
             n = input("\n Option: ")
         except ValueError:
             print("\n Error!")
-            input("\n Press Enter to continue.")
+            #input("\n Press Enter to continue.")
             continue
 
         if choices(n):
@@ -355,8 +355,8 @@ def validOption(min, max, title, options):
 
         if (not n.isdigit()) or (n.isdigit() and int(n) < min) or (n.isdigit() and int(n) > max):
             print("\n Please choose an option.")
-            print("\n Press Enter to continue.")
-            input("")
+            #print("\n Press Enter to continue.")
+            #input("")
             continue
         else:
             return n
@@ -449,8 +449,8 @@ def pawnError():
     pressEnter()
 
 def pressEnter():
-    print(" Press Enter to continue.")
-    input("")
+    #print(" Press Enter to continue.")
+    #input("")
     drawBoard()
 
 def selectError():

@@ -221,7 +221,6 @@ def remaining_unicode():
     out = ""
     temp_out = ""
 
-    #  temp_out += "        REMAINING:       \n"
     out += colors.normal(temp_out)
     temp_out = colors.white_header("   White:   ")
     out += temp_out
@@ -302,10 +301,6 @@ def remaining_unicode():
 
     print(out + colors.RESET, end = "")
 
-    # print("  {} ♙  {} ♖  │  {} ♟  {} ♜".format(w_pawn_count, w_rook_count, b_pawn_count, b_rook_count))
-    # print("  {} ♘  {} ♗  │  {} ♞  {} ♝".format(w_knight_count, w_bishop_count, b_knight_count, b_bishop_count))
-    # print("  {} ♕  {} ♔  │  {} ♛  {} ♚".format(w_queen_count, w_king_count, b_queen_count, b_king_count))
-
 def startScreen():
     board.populate()
     if not globVar.show_all_menus:
@@ -323,14 +318,11 @@ def startScreen():
 
     if globVar.numPlayers < 2:
         random.seed(a=None)
-        #  aggressiveMenu()
         menus_driver("aggressive")
     if globVar.numPlayers == 0:
         globVar.noPlayers = True
-        #  speedMenu()
         menus_driver("speed")
 
-    #  formatMenu()
     menus_driver("format")
     globVar.ready = True
 
@@ -347,7 +339,6 @@ def validOption(min, max, title, options):
             n = input("\n Option: ")
         except ValueError:
             print("\n Error!")
-            #input("\n Press Enter to continue.")
             continue
 
         if choices(n):
@@ -355,8 +346,6 @@ def validOption(min, max, title, options):
 
         if (not n.isdigit()) or (n.isdigit() and int(n) < min) or (n.isdigit() and int(n) > max):
             print("\n Please choose an option.")
-            #print("\n Press Enter to continue.")
-            #input("")
             continue
         else:
             return n
@@ -431,42 +420,30 @@ def simulateMenu():
 def chooseAvailableMessage():
     errorSeparator()
     print("\n Please choose a piece with available moves.")
-    pressEnter()
 
 def getouttacheckMessage():
     errorSeparator()
     print("\n Choose a move to get out of check.")
-    pressEnter()
 
 def pickValidMoveMessage():
     errorSeparator()
     print("\n Please pick a valid move.")
-    pressEnter()
 
 def pawnError():
     errorSeparator()
     print("\n Please pick a valid piece.")
-    pressEnter()
-
-def pressEnter():
-    #print(" Press Enter to continue.")
-    #input("")
-    drawBoard()
 
 def selectError():
     errorSeparator()
     print("\n Please choose a square with one of your pieces.")
-    pressEnter()
 
 def colError():
     errorSeparator()
     print("\n Please choose a valid column.")
-    pressEnter()
 
 def rowError():
     errorSeparator()
     print("\n Please choose a valid row.")
-    pressEnter()
 
 def errorSeparator():
     print("\n ",end="")
@@ -559,16 +536,15 @@ def choices(choice):
         board.populate()
         clear()
         print("\n The board has been reset.")
-        pressEnter()
+        drawBoard()
         return True
     elif choice.upper() == "L":
         utils.readSave()
         clear()
         print("\n The last save has been loaded.")
-        pressEnter()
+        drawBoard()
         return True
     elif choice.upper() == "S":
-        #  simulateMenu()
         menus_driver("simulate")
         return True
     else:
@@ -599,7 +575,6 @@ def loadSave():
         board.populate()
         read.readSave()
     else:
-        # board.populate()
         startScreen()
 
 def not_ready_error():
@@ -609,7 +584,6 @@ def not_ready_error():
     startScreen()
 
 def help():
-    #  b = int(os.get_terminal_size().columns / 5)
     b = 4
     buffer = ""
     for i in range(b):

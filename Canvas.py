@@ -14,6 +14,7 @@ import utils
 from save import *
 import simulate
 
+
 def drawBoard():
     if globVar.simulation:
         return
@@ -24,33 +25,34 @@ def drawBoard():
 
     remaining()
 
+
 def drawBoard_ascii():
     clear()
     nowPlaying_ascii()
     numLabel = 8
     letterLabel = 'A'
 
-    print("\n     ", end = "")
+    print("\n     ", end="")
     for i in range(8):
-        print(letterLabel + " ", end = "")
+        print(letterLabel + " ", end="")
         letterLabel = chr(ord(letterLabel) + 1)
 
-    print("\n    ",end="")
+    print("\n    ", end="")
     for i in range(18):
-        print("-",end="")
+        print("-", end="")
 
-    print("\n", end = "")
+    print("\n", end="")
     for i in range(8):
-        print(' {}  |'.format(numLabel), end = "")
+        print(' {}  |'.format(numLabel), end="")
         for j in range(8):
-            print(board.Grid(i, j), end = "")
-        print("|",end="")
+            print(board.Grid(i, j), end="")
+        print("|", end="")
         numLabel -= 1
-        print("\n", end = "")
-    print("    ",end="")
+        print("\n", end="")
+    print("    ", end="")
     for i in range(18):
-        print("-",end="")
-    print("\n",end="")
+        print("-", end="")
+    print("\n", end="")
 
 
 def drawBoard_unicode():
@@ -62,11 +64,12 @@ def drawBoard_unicode():
     numLabel = 8
     letterLabel = 'A'
     out_2 += colors.normal("\n     ")
+    out_2 += " "
     for i in range(8):
-        out_2 += colors.normal(str(letterLabel + " "))
+        out_2 += colors.normal(str(letterLabel + "  "))
         letterLabel = chr(ord(letterLabel) + 1)
 
-    out_2 += "    \n    "
+    #out_2 += "    \n    "
     for i in range(21):
         out_2 += " "
 
@@ -82,7 +85,8 @@ def drawBoard_unicode():
         out_2 += colors.normal(" ")
     out_2 += colors.normal("\n")
     out = out_1 + out_2 + colors.RESET
-    print(out, end = "")
+    print(out, end="")
+
 
 def h_buffer():
     b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2))
@@ -91,6 +95,7 @@ def h_buffer():
         out += "\n"
     return out
 
+
 def w_buffer():
     b = int(os.get_terminal_size().columns / 2) - board.WIDTH
     out = ""
@@ -98,26 +103,29 @@ def w_buffer():
         out += " "
     return out
 
+
 def nowPlaying():
     if globVar.unicode or globVar.limited_unicode:
         nowPlaying_unicode()
     else:
         nowPlaying_ascii()
 
+
 def nowPlaying_ascii():
-    print(" ",end="")
+    print(" ", end="")
     for i in range(23):
-        print("-",end="")
-    if( (globVar.w_check and globVar.player == "W") or
-    (globVar.b_check and globVar.player == "b")):
+        print("-", end="")
+    if ((globVar.w_check and globVar.player == "W") or
+            (globVar.b_check and globVar.player == "b")):
         print("\n |       CHECK!    ", globVar.player, " |")
     elif globVar.checkmate:
         print("\n |      CHECKMATE!     |")
     else:
         print("\n |    NOW PLAYING: ", globVar.player, " |")
-    print(" ",end="")
+    print(" ", end="")
     for i in range(23):
-        print("-",end="")
+        print("-", end="")
+
 
 def nowPlaying_unicode():
     out = ""
@@ -131,18 +139,18 @@ def nowPlaying_unicode():
         p += colors.b_king
 
     out_1 += "╔"
-    for i in range(21):
+    for i in range(19):
         out_1 += "═"
     out_1 += "╗ "
-    if( (globVar.w_check and globVar.player == "W") or
-    (globVar.b_check and globVar.player == "b")):
+    if ((globVar.w_check and globVar.player == "W") or
+            (globVar.b_check and globVar.player == "b")):
         out_1 += "\n ║" + "       CHECK!    " + p
         out_2 += "   ║ \n"
     elif globVar.checkmate:
         out_1 += "\n ║" + "      CHECKMATE!     "
         out_2 += "║ \n"
     else:
-        out_1 += "\n ║" + "    NOW PLAYING:  " + p
+        out_1 += "\n ║" + "    NOW PLAYING: " + p
         out_2 += "  ║ \n"
     out_2 += " ╚"
     for i in range(21):
@@ -150,6 +158,7 @@ def nowPlaying_unicode():
     out_2 += "╝ "
     out = colors.normal(out_1) + colors.normal(out_2)
     return out + colors.RESET
+
 
 def pawn_to_new():
     drawBoard()
@@ -163,18 +172,20 @@ def pawn_to_new():
             pawnError()
             continue
         if (choice == "" or len(choice) > 1 or not choice.isdigit()
-        or int(choice) < 1 or int(choice) > 4):
+                or int(choice) < 1 or int(choice) > 4):
             pawnError()
             continue
         else:
             break
     return int(choice)
 
+
 def remaining():
     if globVar.unicode or globVar.limited_unicode:
         remaining_unicode()
     else:
         remaining_ascii()
+
 
 def remaining_ascii():
     w_pawn_count = utils.typeCounter("pawn", "W")
@@ -190,19 +201,20 @@ def remaining_ascii():
     b_queen_count = utils.typeCounter("queen", "b")
     b_king_count = utils.typeCounter("king", "b")
 
-    print(" ",end="")
+    print(" ", end="")
     #  print("       REMAINING:\n ", end="")
     for i in range(23):
-        print("-",end="")
+        print("-", end="")
     print("\n   White:   |   Black:")
     print("  {}P'  {}R'  |  {}p.  {}r.".format(w_pawn_count, w_rook_count, b_pawn_count, b_rook_count))
     print("  {}N'  {}B'  |  {}n.  {}b.".format(w_knight_count, w_bishop_count, b_knight_count, b_bishop_count))
     print("  {}Q'  {}K'  |  {}q.  {}k.".format(w_queen_count, w_king_count, b_queen_count, b_king_count))
 
-    print(" ",end="")
+    print(" ", end="")
     for i in range(23):
-        print("-",end="")
+        print("-", end="")
     print("\n")
+
 
 def remaining_unicode():
     w_pawn_count = utils.typeCounter("pawn", "W")
@@ -299,7 +311,7 @@ def remaining_unicode():
     temp_out += colors.normal("  \n\n")
     out += temp_out
 
-    print(out + colors.RESET, end = "")
+    print(out + colors.RESET, end="")
 
 def startScreen():
     board.populate()
@@ -327,6 +339,7 @@ def startScreen():
     globVar.ready = True
 
     return True
+
 
 def validOption(min, max, title, options):
     while True:
@@ -363,12 +376,14 @@ def speedMenu():
     else:
         globVar.slow_speed = False
 
+
 def aggressive_message():
     clear()
     print("\n What kind of an AI do you want?")
     print("\n 1. Normal")
     print(" 2. Aggressive")
     print(" 3. Chill")
+
 
 def aggressiveMenu():
     title = "What kind of an AI do you want?"
@@ -389,6 +404,7 @@ def aggressiveMenu():
         globVar.aggressive = False
         globVar.chill = True
 
+
 def formatMenu():
     title = "How do you want the game to look?"
     options = []
@@ -401,7 +417,8 @@ def formatMenu():
     globVar.unicode = (int(n) == 1)
     globVar.limited_unicode = (int(n) == 2)
     if globVar.limited_unicode:
-        colors.limited_pieces() # change unicode pieces to letters
+        colors.limited_pieces()  # change unicode pieces to letters
+
 
 def simulateMenu():
     clear()
@@ -417,38 +434,58 @@ def simulateMenu():
     globVar.ready = True
     simulate.begin(n)
 
+
 def chooseAvailableMessage():
     errorSeparator()
     print("\n Please choose a piece with available moves.")
+
 
 def getouttacheckMessage():
     errorSeparator()
     print("\n Choose a move to get out of check.")
 
+
 def pickValidMoveMessage():
     errorSeparator()
     print("\n Please pick a valid move.")
 
+
 def pawnError():
     errorSeparator()
     print("\n Please pick a valid piece.")
+    pressEnter()
+
+def inputError():
+    print(" Invalid Input")
+    print(" Press Enter to continue.")
+    input("")
+    drawBoard()
+
+def pressEnter():
+    print(" Press Enter to continue.")
+    input("")
+    drawBoard()
+
 
 def selectError():
     errorSeparator()
     print("\n Please choose a square with one of your pieces.")
 
+
 def colError():
     errorSeparator()
     print("\n Please choose a valid column.")
+
 
 def rowError():
     errorSeparator()
     print("\n Please choose a valid row.")
 
 def errorSeparator():
-    print("\n ",end="")
+    print("\n ", end="")
     for i in range(43):
-        print("-",end="")
+        print("-", end="")
+
 
 def clear():
     if platform.system() == "Linux" or platform.system() == "Darwin":
@@ -458,42 +495,28 @@ def clear():
     else:
         print("\033c")
 
+
 def chooseCol():
     while True:
-        try:
-            choice = input("\n Choose a column (letter): ")
-            choices(choice)
-        except ValueError:
-            colError()
-            continue
-        if (choice == "" or len(choice) > 1 or
-        ord(choice.upper()) < ord('A') or ord(choice.upper()) > ord('H')):
-            colError()
-            continue
-        else:
-            break
-    return choice
+        print("\n enter help for options")
+        choice = input(" Choose a column (letter): ")
+        choices(choice)
+        if not choice.isdigit() and choice != "" and len(choice) == 1:
+            if ord('A') <= ord(choice.upper()) <= ord('H'):
+                return choice
+        inputError()
+
 
 def chooseRow():
     while True:
-        try:
-            choice = input("\n Choose a row (number): ")
-            choices(choice)
-        except ValueError:
-            rowError()
-            continue
+        print("\n enter help for options")
+        choice = input(" Choose a row (number): ")
+        choices(choice)
+        if choice != "" and choice.isdigit():
+            if 1 <= int(choice) <= 8:
+                return int(choice)
+        inputError()
 
-        if not choice.isdigit() or choice == "":
-            rowError()
-            continue
-
-        elif int(choice) < 1 or int(choice) > 8:
-            rowError()
-            continue
-        else:
-            break
-
-    return int(choice)
 
 def chooseMove(availMovesL):
     while True:
@@ -516,6 +539,7 @@ def chooseMove(availMovesL):
 
     return int(choice)
 
+
 def menus_driver(menu):
     if not globVar.show_all_menus:
         return
@@ -528,6 +552,7 @@ def menus_driver(menu):
     elif menu == "format":
         formatMenu()
 
+
 def choices(choice):
     if choice.upper() == "Q":
         quit()
@@ -538,6 +563,8 @@ def choices(choice):
         print("\n The board has been reset.")
         drawBoard()
         return True
+    elif choice.upper() == "HELP":
+        displayOptions()
     elif choice.upper() == "L":
         utils.readSave()
         clear()
@@ -550,6 +577,12 @@ def choices(choice):
     else:
         return False
 
+
+def displayOptions():
+    print("Q to quit game")
+    print("R to reset board")
+
+
 def quit():
     clear()
     print("\n Would you like to save your game? ", end="")
@@ -561,12 +594,14 @@ def quit():
         utils.delete_save()
     sys.exit(0)
 
+
 def yesNo():
     y = input("(y/n): ")
     if (y.upper() == "Y" or y.upper() == "YES"):
         return True
     else:
         return False
+
 
 def loadSave():
     clear()
@@ -577,11 +612,13 @@ def loadSave():
     else:
         startScreen()
 
+
 def not_ready_error():
     clear()
     print("\n Oops! Game was not saved properly.")
     input("\n Press Enter to load a new game.")
     startScreen()
+
 
 def help():
     b = 4
@@ -595,7 +632,7 @@ def help():
     print("   -a " + buffer + " ASCII-only")
     print("   -l " + buffer + " Limited ANSI")
     print("   -u " + buffer + " Full Unicode / ANSI / TrueColor")
-    
+
     print("\n GAME MODES")
     print("   -0 " + buffer + " 0 Player")
     print("   -1 " + buffer + " 1 Player")
@@ -614,4 +651,3 @@ def help():
     print("   -m " + buffer + " Show all menus")
     print("   -h " + buffer + " Show help / options")
     print("   -i " + buffer + " Simulation")
-
